@@ -53,7 +53,7 @@ class EditorExtension extends \Twig_Extension
 
     public function includeEditor()
     {
-        if (!$this->environment->hasExtension('assets')) {
+        if (!$this->environment->hasExtension('asset')) {
             return;
         }
 
@@ -63,18 +63,20 @@ class EditorExtension extends \Twig_Extension
 
         if (!$this->ckeditorIncluded) {
 
-            $asset = $this->environment
-                ->getExtension('assets');
-            $jsPath = $asset
-                ->getAssetUrl($this->basePath . '/wysihtml5-0.3.0.js');
-            $jsPathAdv = $asset
-                ->getAssetUrl($this->basePath . '/thecodeine-advanced.js');
-            $jsEditor = $asset
-                ->getAssetUrl($this->basePath . '/editor.js');
+            $asset = $this->environment->getExtension('asset');
 
+            $jsJquery = $asset->getAssetUrl($this->basePath . '/js/editor.jquery.js');
+            $jsPath = $asset->getAssetUrl($this->basePath . '/js/editor.wysihtml5.js');
+            $jsPathAdv = $asset->getAssetUrl($this->basePath . '/js/editor.config.js');
+            $jsEditor = $asset->getAssetUrl($this->basePath . '/js/editor.js');
+
+            $cssEditor = $asset->getAssetUrl($this->basePath . '/css/editor.css');
+
+            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsJquery);
             echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsPath);
             echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsPathAdv);
             echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsEditor);
+            echo sprintf('<link rel="stylesheet" href="%s">', $cssEditor);
             $this->ckeditorIncluded = true;
         }
     }

@@ -1,0 +1,83 @@
+<div id="wysihtml5-toolbar" class="wysihtml5-toolbar" style="display: none;">
+    <header>
+        <ul class="commands">
+            <li data-wysihtml5-command="bold" title="Make text bold (CTRL + B)" class="command"></li>
+            <li data-wysihtml5-command="italic" title="Make text italic (CTRL + I)" class="command"></li>
+
+            <li data-wysihtml5-command="justifyLeft" title="Align left" class="command"></li>
+            <li data-wysihtml5-command="justifyCenter" title="Center text" class="command"></li>
+            <li data-wysihtml5-command="justifyRight" title="Algin right" class="command"></li>
+
+            <li data-wysihtml5-command="insertUnorderedList" title="Insert an unordered list" class="command"></li>
+            <li data-wysihtml5-command="insertOrderedList" title="Insert an ordered list" class="command"></li>
+            <li data-wysihtml5-command="createLink" title="Insert a link" class="command"></li>
+            <li data-wysihtml5-command="insertImage" title="Insert an image" class="command"></li>
+            <li data-wysihtml5-command="insertTheCodeineImage" title="Insert an image" class="command"></li>
+            <li data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2" title="Insert headline 2" class="command"></li>
+            <li data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3" title="Insert headline 3" class="command"></li>
+            <li data-wysihtml5-command-group="foreColor" class="fore-color" title="Color the selected text" class="command">
+                <ul>
+                    <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="grey"></li>
+                    <li data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue"></li>
+                </ul>
+            </li>
+            <li data-wysihtml5-command="insertSpeech" title="Insert speech" class="command"></li>
+            <li data-wysihtml5-action="change_view" title="Show HTML" class="action"></li>
+        </ul>
+    </header>
+    <div class="panel panel-default" data-wysihtml5-dialog="createLink" style="display: none;">
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-lg-1 control-label">
+                    Link:
+                </label>
+                <div class="col-lg-7">
+                    <input data-wysihtml5-dialog-field="href" class="form-control" value="http://">
+                </div>
+                <div class="col-lg-4 form-actions btn-toolbar">
+                    <input type="button" class="btn btn-primary btn-sm" data-wysihtml5-dialog-action="save" value="OK"/>
+                    <input type="button" class="btn btn-default btn-sm" data-wysihtml5-dialog-action="cancel" value="Anuluj"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div data-wysihtml5-dialog="insertImage" style="display: none;">
+        <label>Image: <input data-wysihtml5-dialog-field="src" value="http://"></label>
+        <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+    </div>
+
+    <div class="panel panel-default" data-wysihtml5-dialog="insertTheCodeineImage" style="display:none">
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-lg-1 control-label">
+                    Plik:
+                </label>
+                <div class="col-lg-7">
+                    <input id="wysihtml5-image-file" class="form-control" name="image[file]"
+                           type="file" />
+                </div>
+                <div class="col-lg-4 form-actions btn-toolbar">
+                    <input id="wysihtml5-image-upload-button" class="wysihtml5-image-upload-button btn btn-primary btn-sm" type="button"
+                           value="Wyślij" />
+                    <input type="button" class="btn btn-default btn-sm" data-wysihtml5-dialog-action="cancel" value="Anuluj">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form(form) }}
+{{ include_the_codeine_editor() }}
+<script type="text/javascript">
+    (function () {
+        var editorId = 'form_the_codeine_editor_test';
+        window[editorId] = new wysihtml5.Editor(editorId, {
+            name: editorId,
+            toolbar: 'wysihtml5-toolbar',
+            parserRules: wysihtml5ParserRules
+        });
+
+    }());
+</script>

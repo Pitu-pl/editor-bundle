@@ -10,7 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EditorType extends AbstractType
 {
-    /**
 
     /**
      * {@inheritdoc}
