@@ -1,4 +1,5 @@
 vendor/
+node_modules/
 Resources/public/vendor/
 Behat/Fixtures/app/cache/
 Behat/Fixtures/app/logs/

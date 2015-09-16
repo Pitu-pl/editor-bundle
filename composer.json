@@ -31,9 +31,11 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "npm install bower --save",
             "bower install"
         ],
         "post-update-cmd": [
+            "npm update",
             "bower update"
         ]
     },
