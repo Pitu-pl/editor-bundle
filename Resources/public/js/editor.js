@@ -1,72 +1,115 @@
-$(function() {
-    $('.wysihtml5-image-file').change(function(){
-        console.log('validation');
-        var file = this.files[0];
-        name = file.name;
-        size = file.size;
-        type = file.type;
-        //Your validation
-    });
-    $('.wysihtml5-image-upload-button').click(function(){
-        console.log('upload image clicked');
-        window['uploadEditorId'] = $(this).closest('.wysihtml5-toolbar').attr('data-id');
-        var fileElement = $(this).closest('[data-wysihtml5-dialog]').find('input[type=file]')[0];
-        var formData = new FormData();
-        formData.append('image[file]', fileElement.files[0], 'file');
-
-        $.ajax({
-            url: Routing.generate('_image_upload_request'),  //Server script to process data
-            type: 'post',
-            xhr: function() {  // Custom XMLHttpRequest
-                var myXhr = $.ajaxSettings.xhr();
-                if(myXhr.upload){ // Check if upload property exists
-                    myXhr.upload.addEventListener('progress',progressHandlingFunction, false); // For handling the progress of the upload
-                }
-                return myXhr;
-            },
-            //Ajax events
-            beforeSend: beforeSendHandler,
-            success: completeHandler,
-            error: errorHandler,
-            // Form data
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-    });
-
+window.tuna = window.tuna || {};
+_.extend(tuna, {
+    locale: 'pl',
+    website: {},
+    backbone: {},
+    templates: {},
+    view: {
+        helpers: {}
+    },
+    model: {},
+    collection: {},
+    router: {},
+    features: {}
 });
 
-function beforeSendHandler(e) {
-    console.log('before', e);
-}
+/**
+ * Wysiwyg editor
+ *
+ * @type {*|void}
+ */
+tuna.view.EditorView = Backbone.View.extend({
 
-function completeHandler(e) {
-    console.log('complete', e);
-    var toolbarId = window['uploadEditorId'] + '-wysihtml5-toolbar';
-    var toolbar = $('#' + toolbarId);
-    var editorId = 'editor-' + window['uploadEditorId'];
-    var composer = window[editorId].composer;
-    var imageUrl = location.protocol + '//' + location.host + e.image.url;
-    composer.focus();
-    wysihtml5.commands.insertImage.exec(composer, 'insertImage', imageUrl);
-    var dialogElement = $('div[data-wysihtml5-dialog="insertTheCodeineImage"]', toolbar)[0];
-    console.log(dialogElement);
-    var link = $('[data-wysihtml5-command="insertTheCodeineImage"]', toolbar)[0];
-    console.log(link);
-    $('div[data-wysihtml5-dialog="insertTheCodeineImage"]').find('input[type="file"]').each(function(){$(this).val('')});
-    $('[data-wysihtml5-dialog="insertTheCodeineImage"] [data-wysihtml5-dialog-action=cancel]', toolbar).trigger('click');
-//    window[editorId].fire("cancel:dialog", { command: 'insertTheCodeineImage', dialogContainer: dialogElement, commandLink: link });
-}
+    initialize: function() {
+        var root = this;
 
-function errorHandler(e) {
-    console.log('error', e);
-    alert('Wystąpił błąd podczas wysyłania pliku na serwer');
-}
-function progressHandlingFunction(e){
-    if(e.lengthComputable){
-        $('progress').attr({value:e.loaded,max:e.total});
+        this.divEditorId    = this.$el.attr('id') + '-editor';
+        this.$divEditor      = $( '#' + this.divEditorId );
+        this.$editorToolbar  = $('div[data-target="#' + this.divEditorId + '"]');
+
+        this.$divEditor
+            .html(this.$el.val())
+            .show()
+            .wysiwyg();
+
+        this.$el.hide();
+        this.$editorToolbar.find('input[data-target="#pictureBtn"]').hide();
+
+        this.$divEditor.on('blur', _.bind(this.onEditorChange, this));
+        this.$editorToolbar.find('.dropdown-menu input').on('click', function(e){
+            e.stopPropagation();
+        });
+        this.$editorToolbar.find('#pictureBtn').click(function(e) {
+            e.preventDefault();
+            root.$editorToolbar.find('input[data-target="#pictureBtn"]').trigger('click');
+        });
+
+        $('div[data-role="editor-toolbar"] .insertHTML-insertBtn').click(function(e){
+            e.preventDefault();
+            root._insertHtmlAtCursor($(this).parent().parent().find('.insertHTML-value').val());
+            root.onEditorChange();
+        });
+        $('.insertHTML-value').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+        })
+
+        $('input[data-edit="createLink"]').on('keydown', function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                $(this).parent().find('button').click();
+                return false;
+            }
+        })
+
+        //remove bad html when pasting to editor
+        $(document).on('paste', '.admin-wysiwyg-editor', function(e) {
+            var html = (e.originalEvent || e).clipboardData.getData('text/html') || (e.originalEvent || e).clipboardData.getData('text/plain');
+
+            document.execCommand('insertHTML', false, $.htmlClean(html, {
+                format: false,
+                replace: [['h1','h3'],'h2'],
+                removeAttrs: ['class', 'style', "font"],
+                allowedAttributes: ["width", "height","src", "frameborder","allowfullscreen"],
+                allowedTags: ['p','i','b','u','strong', 'iframe', "ul", "li"],
+                removeTags: ["basefont", "center", "dir", "font", "frame", "frameset", "isindex", "menu", "noframes", "s", "strike","br", "canvas", "hr", "img"],
+                allowEmpty: ['iframe'],
+                tagAllowEmpty: ['iframe'],
+                allowComments: false,
+            }));
+
+            root.onEditorChange();
+            e.preventDefault();
+        })
+    },
+
+    onEditorChange: function() {
+        this.$el.html( this.$divEditor.html() );
+    },
+
+    _insertHtmlAtCursor: function(html) {
+        var sel, range;
+        var htmlContainer = document.createElement("span");
+        htmlContainer.innerHTML = html;
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+                range.insertNode( htmlContainer );
+            } else {
+                $('.admin-wysiwyg-editor:eq(0)').append(html);
+            }
+        } else if (document.selection && document.selection.createRange) {
+            document.selection.createRange().innerHTML = htmlContainer.innerHtml;
+        }
     }
-}
+});
+
+tuna.website = {
+    init: function () {
+        $('.thecodeine_admin_editor').each(function(){
+            new tuna.view.EditorView({el:  $(this)[0] });
+        });
+    }
+};

@@ -65,18 +65,27 @@ class EditorExtension extends \Twig_Extension
 
             $asset = $this->environment->getExtension('asset');
 
-            $jsJquery = $asset->getAssetUrl($this->basePath . '/js/editor.jquery.js');
-            $jsPath = $asset->getAssetUrl($this->basePath . '/js/editor.wysihtml5.js');
-            $jsPathAdv = $asset->getAssetUrl($this->basePath . '/js/editor.config.js');
-            $jsEditor = $asset->getAssetUrl($this->basePath . '/js/editor.js');
+            $js = array();
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery/dist/jquery.min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery.hotkeys/jquery.hotkeys.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/js/bootstrap.min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/underscore/underscore-min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/components-backbone/backbone-min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/js/editor.js');
 
-            $cssEditor = $asset->getAssetUrl($this->basePath . '/css/editor.css');
+            $css = array();
+            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/css/bootstrap.min.css');
+            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/fontawesome/css/font-awesome.min.css');
+            $css[] = $asset->getAssetUrl($this->basePath . '/css/editor.css');
 
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsJquery);
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsPath);
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsPathAdv);
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsEditor);
-            echo sprintf('<link rel="stylesheet" href="%s">', $cssEditor);
+            foreach ($js as $url) {
+                echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $url);
+            }
+
+            foreach ($css as $url) {
+                echo sprintf('<link rel="stylesheet" href="%s">', $url);
+            }
             $this->ckeditorIncluded = true;
         }
     }

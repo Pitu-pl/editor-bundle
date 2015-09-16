@@ -1,0 +1,22 @@
+{
+    "name": "tuna-editorbundle",
+    "version": "0.0.0",
+    "authors": [
+        "The Codeine"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests",
+        "less",
+        "**/*.html"
+    ],
+    "dependencies": {
+        "bootstrap": "~3.3.5",
+        "bootstrap-wysiwyg": "https://github.com/steveathon/bootstrap-wysiwyg.git#master",
+        "components-backbone": "~1.2.0"
+    }
+}
