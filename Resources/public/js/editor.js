@@ -1,16 +1,7 @@
 window.tuna = window.tuna || {};
+
 _.extend(tuna, {
-    locale: 'pl',
-    website: {},
-    backbone: {},
-    templates: {},
-    view: {
-        helpers: {}
-    },
-    model: {},
-    collection: {},
-    router: {},
-    features: {}
+    view: {}
 });
 
 /**
