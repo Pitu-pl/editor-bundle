@@ -1,0 +1,16 @@
+.btn-toolbar {
+    padding: 20px;
+}
+
+.btn-toolbar .btn-group .btn .fa {
+    height: 20px;
+    line-height: 20px;
+}
+
+.admin-wysiwyg-editor {
+    margin: 0 20px;
+    padding: 10px;
+    height: 300px;
+    background-color: #f0f0f0;
+    outline: 0;
+}

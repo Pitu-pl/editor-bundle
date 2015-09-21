@@ -72,7 +72,7 @@ class EditorContext implements MinkAwareContext
      */
     public function iShouldHaveEditorExtensionServiceInContainer()
     {
-        return is_a($this->getContainer()->get('thecodeine_editor.twig.form_extension'), 'TheCodeine\EditorBundle\Twig\Extension\EditorExtension');
+        return is_a($this->getContainer()->get('the_codeine_editor.form.twig'), 'TheCodeine\EditorBundle\Twig\Extension\EditorExtension');
     }
 
     /**

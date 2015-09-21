@@ -53,7 +53,7 @@ class EditorExtension extends \Twig_Extension
 
     public function includeEditor()
     {
-        if (!$this->environment->hasExtension('assets')) {
+        if (!$this->environment->hasExtension('asset')) {
             return;
         }
 
@@ -63,18 +63,29 @@ class EditorExtension extends \Twig_Extension
 
         if (!$this->ckeditorIncluded) {
 
-            $asset = $this->environment
-                ->getExtension('assets');
-            $jsPath = $asset
-                ->getAssetUrl($this->basePath . '/wysihtml5-0.3.0.js');
-            $jsPathAdv = $asset
-                ->getAssetUrl($this->basePath . '/thecodeine-advanced.js');
-            $jsEditor = $asset
-                ->getAssetUrl($this->basePath . '/editor.js');
+            $asset = $this->environment->getExtension('asset');
 
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsPath);
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsPathAdv);
-            echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $jsEditor);
+            $js = array();
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery/dist/jquery.min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery.hotkeys/jquery.hotkeys.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/js/bootstrap.min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/underscore/underscore-min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/components-backbone/backbone-min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js');
+            $js[] = $asset->getAssetUrl($this->basePath . '/js/editor.js');
+
+            $css = array();
+            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/css/bootstrap.min.css');
+            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/fontawesome/css/font-awesome.min.css');
+            $css[] = $asset->getAssetUrl($this->basePath . '/css/editor.css');
+
+            foreach ($js as $url) {
+                echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $url);
+            }
+
+            foreach ($css as $url) {
+                echo sprintf('<link rel="stylesheet" href="%s">', $url);
+            }
             $this->ckeditorIncluded = true;
         }
     }

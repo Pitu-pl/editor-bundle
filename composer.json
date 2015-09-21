@@ -29,6 +29,16 @@
         "behat/mink-goutte-driver": "^1.1",
         "phpunit/phpunit": "4.8.*"
     },
+    "scripts": {
+        "post-install-cmd": [
+            "npm install bower --save",
+            "bower install"
+        ],
+        "post-update-cmd": [
+            "npm update",
+            "bower update"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "TheCodeine\\EditorBundle\\" : ""
