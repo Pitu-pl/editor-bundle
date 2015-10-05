@@ -74,12 +74,13 @@ class EditorExtension extends \Twig_Extension
                 $js[] = $asset->getAssetUrl($this->basePath . '/vendor/components-backbone/backbone-min.js');
                 $js[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.js');
             }
+            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery-htmlclean/jquery.htmlClean.js');
             $js[] = $asset->getAssetUrl($this->basePath . '/js/editor.js');
 
             $css = array();
             if ($this->standalone) {
                 $css[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/css/bootstrap.min.css');
-                $css[] = $asset->getAssetUrl($this->basePath . '/vendor/fontawesome/css/font-awesome.min.css');
+                $css[] = $asset->getAssetUrl($this->basePath . '/vendor/font-awesome/css/font-awesome.min.css');
                 $css[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.css');
             }
 
