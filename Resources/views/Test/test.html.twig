@@ -7,6 +7,8 @@
 {{ include_the_codeine_editor() }}
 <script type="text/javascript">
     (function () {
-        tuna.website.init();
+        new tuna.view.EditorView({
+            selector: '#form_the_codeine_editor_test'
+        });
     }());
 </script>

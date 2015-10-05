@@ -19,9 +19,10 @@ class EditorExtension extends \Twig_Extension
      */
     private $environment;
 
-    public function __construct($autoinclude, $basePath)
+    public function __construct($autoinclude, $standalone, $basePath)
     {
         $this->ckeditorIncluded = $autoinclude;
+        $this->standalone = $standalone;
         $this->basePath = rtrim($basePath, '/');
     }
 
@@ -66,18 +67,21 @@ class EditorExtension extends \Twig_Extension
             $asset = $this->environment->getExtension('asset');
 
             $js = array();
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery/dist/jquery.min.js');
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery.hotkeys/jquery.hotkeys.js');
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/js/bootstrap.min.js');
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/underscore/underscore-min.js');
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/components-backbone/backbone-min.js');
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js');
+            if ($this->standalone) {
+                $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery/dist/jquery.min.js');
+                $js[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/js/bootstrap.min.js');
+                $js[] = $asset->getAssetUrl($this->basePath . '/vendor/underscore/underscore-min.js');
+                $js[] = $asset->getAssetUrl($this->basePath . '/vendor/components-backbone/backbone-min.js');
+                $js[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.js');
+            }
             $js[] = $asset->getAssetUrl($this->basePath . '/js/editor.js');
 
             $css = array();
-            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/css/bootstrap.min.css');
+            if ($this->standalone) {
+                $css[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/css/bootstrap.min.css');
+            }
             $css[] = $asset->getAssetUrl($this->basePath . '/vendor/fontawesome/css/font-awesome.min.css');
-            $css[] = $asset->getAssetUrl($this->basePath . '/css/editor.css');
+            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.css');
 
             foreach ($js as $url) {
                 echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $url);

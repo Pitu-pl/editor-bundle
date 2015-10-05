@@ -56,4 +56,5 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-the_codeine_editor: ~
+the_codeine_editor:
+    standalone: true

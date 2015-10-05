@@ -14,6 +14,7 @@
         <service id="the_codeine_editor.form.twig" class="%the_codeine_editor.form.twig.class%">
             <tag name="twig.extension" />
             <argument>%the_codeine_editor.options.autoinclude%</argument>
+            <argument>%the_codeine_editor.options.standalone%</argument>
             <argument>%the_codeine_editor.options.base_path%</argument>
             <argument type="service" id="service_container" />
         </service>

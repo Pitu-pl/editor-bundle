@@ -10,7 +10,7 @@ class EditorExtensionSpec extends ObjectBehavior
 
     function let()
     {
-        $this->beConstructedWith(true, '');
+        $this->beConstructedWith(true, false, '');
     }
 
     function it_is_initializable()

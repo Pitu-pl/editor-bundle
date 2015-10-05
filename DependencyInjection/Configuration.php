@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('autoinclude')->defaultTrue()->end()
+                ->booleanNode('standalone')->defaultFalse()->end()
                 ->scalarNode('base_path')->defaultValue('bundles/thecodeineeditor')->end()
                 ->booleanNode('debug')->defaultFalse()->end()
                 ->booleanNode('noconflict')->defaultTrue()->end()

@@ -26,6 +26,7 @@ class TheCodeineEditorExtension extends Extension
     private function registerEditorParameters($config, ContainerBuilder $container)
     {
         $container->setParameter('the_codeine_editor.options.autoinclude', !$config['autoinclude']);
+        $container->setParameter('the_codeine_editor.options.standalone', $config['standalone']);
         $container->setParameter('the_codeine_editor.options.base_path', $config['base_path']);
     }
 }
