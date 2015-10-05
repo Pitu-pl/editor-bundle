@@ -5,7 +5,6 @@ Behat/Fixtures/app/cache/
 Behat/Fixtures/app/logs/
 Behat/Fixtures/web/files/
 Behat/Fixtures/web/bundles/
-!Resources/public/vendor/
 
 Behat/Fixtures/app/test.db
 nohup.out
