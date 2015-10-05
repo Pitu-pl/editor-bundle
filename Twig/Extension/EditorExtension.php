@@ -79,9 +79,9 @@ class EditorExtension extends \Twig_Extension
             $css = array();
             if ($this->standalone) {
                 $css[] = $asset->getAssetUrl($this->basePath . '/vendor/bootstrap/dist/css/bootstrap.min.css');
+                $css[] = $asset->getAssetUrl($this->basePath . '/vendor/fontawesome/css/font-awesome.min.css');
+                $css[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.css');
             }
-            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/fontawesome/css/font-awesome.min.css');
-            $css[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.css');
 
             foreach ($js as $url) {
                 echo sprintf('<script type="text/javascript" src="%s" type="text/javascript" charset="utf-8"></script>', $url);
