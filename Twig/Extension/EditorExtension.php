@@ -73,8 +73,8 @@ class EditorExtension extends \Twig_Extension
                 $js[] = $asset->getAssetUrl($this->basePath . '/vendor/underscore/underscore-min.js');
                 $js[] = $asset->getAssetUrl($this->basePath . '/vendor/components-backbone/backbone-min.js');
                 $js[] = $asset->getAssetUrl($this->basePath . '/vendor/summernote/dist/summernote.js');
+                $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery-htmlclean/jquery.htmlClean.js');
             }
-            $js[] = $asset->getAssetUrl($this->basePath . '/vendor/jquery-htmlclean/jquery.htmlClean.js');
             $js[] = $asset->getAssetUrl($this->basePath . '/js/editor.js');
 
             $css = array();
