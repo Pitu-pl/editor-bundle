@@ -14,7 +14,8 @@ tuna.view.EditorView = Backbone.View.extend({
         toolbar: [
             ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']]
+            ['insert', ['link', 'picture']],
+            ['misc', ['codeview']]
         ],
         onPaste: function(e) {
             e.preventDefault();
@@ -37,7 +38,8 @@ tuna.view.EditorView = Backbone.View.extend({
         dialogsInBody: true,
         styleTags: [],
         toolbar: [
-            ['style', ['bold', 'italic', 'underline', 'clear']]
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['misc', ['codeview']]
         ],
         callbacks: {
             onPaste: function (e) {
