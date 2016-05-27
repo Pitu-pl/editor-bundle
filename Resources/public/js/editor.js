@@ -10,13 +10,6 @@ tuna.view.EditorView = Backbone.View.extend({
 
     summernoteOptions: {
         dialogsInBody: true,
-        styleTags: ['h2', 'h3', 'h4', 'p'],
-        toolbar: [
-            ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']],
-            ['misc', ['codeview']]
-        ],
         onPaste: function(e) {
             e.preventDefault();
             var html = (e.originalEvent || e).clipboardData.getData('text/html') || (e.originalEvent || e).clipboardData.getData('text/plain');
@@ -34,29 +27,21 @@ tuna.view.EditorView = Backbone.View.extend({
         }
     },
 
-    summernoteOptionsBasic: {
-        dialogsInBody: true,
-        styleTags: [],
-        toolbar: [
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['misc', ['codeview']]
-        ],
-        callbacks: {
-            onPaste: function (e) {
-                e.preventDefault();
-                var html = (e.originalEvent || e).clipboardData.getData('text/html') || (e.originalEvent || e).clipboardData.getData('text/plain');
-                document.execCommand('insertHTML', false, $.htmlClean(html, {
-                    format: false,
-                    replace: [['h1'], 'h2'],
-                    removeAttrs: ['class', 'style', 'font'],
-                    allowedAttributes: [],
-                    allowedTags: ['i', 'b', 'u', 'strong'],
-                    removeTags: ['iframe', 'ul', 'li', 'p', 'span', 'basefont', 'center', 'dir', 'font', 'frame', 'frameset', 'isindex', 'menu', 'noframes', 's', 'strike', 'br', 'canvas', 'hr', 'img'],
-                    allowEmpty: ['iframe'],
-                    tagAllowEmpty: ['iframe'],
-                    allowComments: false
-                }));
-            }
+    types: {
+        default: {
+            styleTags: ['h2', 'h3', 'h4', 'p'],
+            toolbar: [
+                ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture']],
+                ['misc', ['codeview']]
+            ]
+        },
+        basic: {
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['misc', ['codeview']]
+            ]
         }
     },
 
@@ -81,7 +66,10 @@ tuna.view.EditorView = Backbone.View.extend({
         $('.main_container').addClass('editor_container');
         _.each($element, function (item) {
             var $item = $(item);
-            $item.summernote($item.data('type') == 'basic' ? this.summernoteOptionsBasic : this.summernoteOptions);
+            var type = $item.data('type') || 'default';
+            var options = _.extend(this.summernoteOptions, this.types[type]);
+
+            $item.summernote(options);
         }, this);
     }
 });
