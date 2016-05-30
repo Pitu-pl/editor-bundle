@@ -10,12 +10,6 @@ tuna.view.EditorView = Backbone.View.extend({
 
     summernoteOptions: {
         dialogsInBody: true,
-        styleTags: ['h2', 'h3', 'h4', 'p'],
-        toolbar: [
-            ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture']]
-        ],
         onPaste: function(e) {
             e.preventDefault();
             var html = (e.originalEvent || e).clipboardData.getData('text/html') || (e.originalEvent || e).clipboardData.getData('text/plain');
@@ -32,20 +26,50 @@ tuna.view.EditorView = Backbone.View.extend({
             }));
         }
     },
+
+    types: {
+        default: {
+            styleTags: ['h2', 'h3', 'h4', 'p'],
+            toolbar: [
+                ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link', 'picture']],
+                ['misc', ['codeview']]
+            ]
+        },
+        basic: {
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['misc', ['codeview']]
+            ]
+        }
+    },
+
     summernote: null,
 
-    initialize: function(options) {
+    initialize: function (options) {
         this.options = options;
-        this.summernote = $(this.options.selector).eq(0).summernote(this.summernoteOptions);
-
         var oThis = this;
-        $('.tabbable [data-toggle="tab"]').click(function(e) {
-            if (!$(e.target).parent().hasClass('active')) {
-                oThis.summernote.destroy();
+
+        $('.nav-tabs [data-toggle="tab"]').click(function (e) {
+                var $tabbable = $('.tabbable');
+                $tabbable.find('.tab-pane:not(.active)' + oThis.options.selector).summernote('destroy');
+
                 _.defer(function () {
-                    oThis.summernote = $(oThis.options.selector).eq(0).summernote(oThis.summernoteOptions);
+                    oThis.initEditor($tabbable.find('.tab-pane.active' + oThis.options.selector));
                 });
-            }
-        });
+            })
+            .filter(':first').trigger('click');
+    },
+
+    initEditor: function ($element) {
+        $('.main_container').addClass('editor_container');
+        _.each($element, function (item) {
+            var $item = $(item);
+            var type = $item.data('type') || 'default';
+            var options = _.extend(this.summernoteOptions, this.types[type]);
+
+            $item.summernote(options);
+        }, this);
     }
 });
